@@ -66,6 +66,7 @@
     }
 
     sabio.page.setData = function(dog){
+        
         var data = "The name of my dog is " + dog.nameOfDog + " and I need to be reminded of " + dog.reminder;
 
        $("#dataSentence").html(data)
@@ -77,8 +78,8 @@
     sabio.page.getData = function() {
          var dog = JSON.parse(localStorage.getItem('dog'));
          if(dog != null){
-       sabio.page.setData(dog);
-   }
+            sabio.page.setData(dog);
+        }
     }
 
     sabio.page.saveData = function() {
