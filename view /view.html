@@ -24,6 +24,11 @@
         <div class="col-xs-6 align-center">
             <div class="row">
             <h1>Welcome to Doggo!</h1>
+            <div class="alert alert-danger alert-dismissible hidden" role="alert" id="formDataAlert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <span id="dataSentence"> </span>
+            </div>
+           
             <img src="https://s-media-cache-ak0.pinimg.com/originals/fc/ff/07/fcff07d633f9f9c4ea1c34834f0294cc.jpg" style="height: 300px; padding-left: 50px" class="align-center text-center" />
             <form>
                 <div class="form-group">
@@ -55,29 +60,39 @@
     <script src="http://sabioapi2.azurewebsites.net/scripts/sabio.js"></script>
     <!-- All your code goes below here-->
     <script type="text/javascript">
+    sabio.page.startUp = function() {
+        sabio.page.getData();
+        $("#saveData").on("click", sabio.page.saveData);
+    }
 
-    $(document).ready(function(){
+    sabio.page.setData = function(dog){
+        var data = "The name of my dog is " + dog.nameOfDog + " and I need to be reminded of " + dog.reminder;
 
-       var dog = JSON.parse(localStorage.getItem('dog'))
+       $("#dataSentence").html(data)
+       $("#formDataAlert").removeClass("hidden");
 
-       var data = "The name of my dog is " + dog.nameOfDog + " and I need to be reminded of " + dog.reminder
 
-       $("#formData").append(data);
+    }
 
-        $("#saveData").on("click", function(){
-            var nameOfDog = $("#nameOfDog").val();
-            var reminder = $("#reminderText").val();
+    sabio.page.getData = function() {
+         var dog = JSON.parse(localStorage.getItem('dog'));
+         if(dog != null){
+       sabio.page.setData(dog);
+   }
+    }
 
-            var obj = {
+    sabio.page.saveData = function() {
+        var nameOfDog = $("#nameOfDog").val();
+        var reminder = $("#reminderText").val();
+
+        var obj = {
                 nameOfDog: nameOfDog,
                 reminder: reminder
-            }
+        }
 
-            localStorage.setItem('dog', JSON.stringify(obj));
-        })
-    })
-    
-
+        localStorage.setItem('dog', JSON.stringify(obj));
+        sabio.page.getData();
+    }
 
 
     </script>
